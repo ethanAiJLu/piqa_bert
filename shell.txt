@@ -1,0 +1,7 @@
+export SQUAD_DEV_PATH="/home/ethony/data/squad_data/dev-v1.1.json"
+export CONTEXT_EMB="/home/ethony/data/my_piqa/emb/context_emb"
+export QUESTION_EMB="/home/ethony/data/my_piqa/emb/question_emb"
+export PRED_DIR="/home/ethony/data/my_piqa/pred/pred.json"
+python merge.py $SQUAD_DEV_PATH $CONTEXT_EMB $QUESTION_EMB $PRED_DIR
+
+python evaluate.py $SQUAD_DEV_PATH $PRED_DIR
