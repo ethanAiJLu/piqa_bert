@@ -9,3 +9,21 @@
 高效的模型，比如点积，欧式距离等，但是即便这样，模型相比传统的方法来说也比较大，而且模型的预测性能相比与传统的方法还有一定的差距，piqa这篇论文中的在squad1.1的数据集上
 使用的模型的性能f1值只达到了62.7（lstm+sa+elmo）,本模型使用了最近大热的bert模型作为编码器，进行了测试，目前已经在一个1万个问题的question的语料上进行训练和测试，
 在训练集上的效果已经超越了piqa论文中的效果，但是对于整个squad1.1数据集。由于笔者设备有限，暂时没有训练出来。
+#环境要求
+torch:0.4.1 
+numpy：1.16.2 
+pytorch_pretrained_bert
+faiss
+#训练命令：
+python main.py --mode train --start-steps 0
+#编码命令
+python main.py baseline --cuda --mode embed_context --load_dir $OUTPUT_DIR/save/XXXX/model.pt --test_path   $SQUAD_DEV_CONTEXT_PATH --context_emb_dir $CONTEXT_EMB_DIR
+python main.py baseline --cuda --mode embed_question --load_dir $OUTPUT_DIR/save/XXXX/model.pt --test_path $SQUAD_DEV_QUESTION_PATH --question_emb_dir $QUESTION_EMB_DIR
+#测试命令
+  训练集的测试命令在训练过程中会自动输出，测试集合的训练命令如下,注意把地址替换为你自己的地址
+export SQUAD_DEV_PATH="/home/ethony/data/squad_data/dev-v1.1.json"
+export CONTEXT_EMB="/home/ethony/data/my_piqa/emb/context_emb"
+export QUESTION_EMB="/home/ethony/data/my_piqa/emb/question_emb"
+export PRED_DIR="/home/ethony/data/my_piqa/pred/pred.json"
+python merge.py $SQUAD_DEV_PATH $CONTEXT_EMB $QUESTION_EMB $PRED_DIR
+python evaluate.py $SQUAD_DEV_PATH $PRED_DIR
